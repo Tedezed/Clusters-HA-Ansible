@@ -1,0 +1,38 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: Install epel-release
+  yum: name=epel-release state=present
+
+- name: Configure repo virt7-docker
+  template: src=virt7-docker-common-release.repo dest=/etc/yum.repos.d/virt7-docker-common-release.repo
+
+- name: Install etcd
+  yum: name=etcd state=present
+
+- name: Start the etcd service
+  service: name=etcd state=started enabled=yes
+  tags: etcd
+
+- name: Install kubernetes-master
+  yum: name=kubernetes-master state=present
+
+- name: Start the kubernetes-master service
+  service: name=kubernetes-master state=started enabled=yes
+  tags: kubernetes-master
+
+- name: Install pcs
+  yum: name=pcs state=present
+  tags: pcs
+
+- name: Start the pcs service
+  service: name=pcs state=started enabled=yes
+  tags: pcs
+
+- name: Install fence-agents-all
+  yum: name=fence-agents-all state=present
+  tags: fence-agents-all
+
+- name: Start the fence-agents-all service
+  service: name=fence-agents-all state=started enabled=yes
+  tags: fence-agents-all

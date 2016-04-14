@@ -1,0 +1,23 @@
+---
+# Definicion de tareas para el conjunto de host
+# This playbook deploys the whole application stack in this site.  
+
+- name: apply common configuration to all nodes
+  hosts: all
+  remote_user: root
+
+  roles:
+    - common
+
+- name: apply configuration to all masters
+  hosts: masters
+  remote_user: root
+
+  roles:
+    - install_masters
+
+- name: apply configuration to all minions
+  hosts: minions
+  remote_user: root
+
+  roles:

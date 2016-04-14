@@ -1,0 +1,55 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$add_public_key = <<EOF1
+echo Add Public Key
+mkdir /root/.ssh
+touch /root/.ssh/authorized_keys
+chmod 755 /root/.ssh
+chmod 644 /root/.ssh/authorized_keys
+echo '#{File.read("#{Dir.home}/VagrantVM/kubernetes-homemade-ansible/Vagrantconfig/keys/id-rsa.pub")}' >> /root/.ssh/authorized_keys
+EOF1
+
+$add_name_hosts = <<EOF2
+echo Add name hosts
+echo '#{File.read("#{Dir.home}/VagrantVM/kubernetes-homemade-ansible/Vagrantconfig/hostsnames")}' >> /etc/hosts
+EOF2
+
+Vagrant.configure(2) do |config|
+  config.vm.define :morrigan do |morrigan|
+    morrigan.vm.box = "centos/7"
+    morrigan.vm.network "private_network", ip: "192.168.80.10"
+    morrigan.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+    end
+    morrigan.vm.provision :shell, :inline => $add_public_key
+    morrigan.vm.provision :shell, :inline => $add_name_hosts
+  end
+  config.vm.define :balar do |balar|
+    balar.vm.box = "centos/7"
+    balar.vm.network "private_network", ip: "192.168.80.11"
+    balar.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+    end
+    balar.vm.provision :shell, :inline => $add_public_key
+    balar.vm.provision :shell, :inline => $add_name_hosts
+  end
+  config.vm.define :artio do |artio|
+    artio.vm.box = "centos/7"
+    artio.vm.network "private_network", ip: "192.168.80.12"
+    artio.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+    end
+    artio.vm.provision :shell, :inline => $add_public_key
+    artio.vm.provision :shell, :inline => $add_name_hosts
+  end
+  config.vm.define :epona do |epona|
+    epona.vm.box = "centos/7"
+    epona.vm.network "private_network", ip: "192.168.80.13"
+    epona.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+    end
+    epona.vm.provision :shell, :inline => $add_public_key
+    epona.vm.provision :shell, :inline => $add_name_hosts
+  end
+end
